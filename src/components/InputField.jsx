@@ -1,14 +1,20 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import PlayIcon from "../assets/Play Icon.jpg";
 
-const InputField = () => {
+const InputField = ({onUpdateArray}) => {
   //error = if user input incorrectly
   const [error, setError] = useState("");
   //value is an input string, and get checked for validity before being saved into value Array
   const [value, setValue] = useState("");
   const [valueArray, setValueArray] = useState([]);
+  //isFocused only for error styling
   const isFocused = useRef({ isFocused: false });
+
+  useEffect(() => {
+    const updateArray = () => onUpdateArray(valueArray)
+    updateArray()
+  }, [valueArray, onUpdateArray])
 
   const generateNumber = () => {
     setValue("");
@@ -24,13 +30,13 @@ const InputField = () => {
     }
     setValue(newValue);
     setValueArray(newValue.split(","));
-    console.log(valueArray)
+    // onUpdateArray(valueArray)
     
   };
 
   const startSorting = () => {
     setValueArray(value.split(','))
-    console.log(valueArray)
+    // onUpdateArray(valueArray)
   }
 
   const handleChange = (e) => {
@@ -48,6 +54,7 @@ const InputField = () => {
         setError(true);
       } else {
         setValue(inputValue);
+        setValueArray(inputValue.split(',').filter((item) => item !== ''));
         setError(false);
       }
     } else {
