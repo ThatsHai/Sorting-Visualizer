@@ -1,9 +1,13 @@
 import React, { useRef } from "react";
 import { useState } from "react";
+import PlayIcon from "../assets/Play Icon.jpg";
 
 const InputField = () => {
-  const [value, setValue] = useState("");
+  //error = if user input incorrectly
   const [error, setError] = useState("");
+  //value is an input string, and get checked for validity before being saved into value Array
+  const [value, setValue] = useState("");
+  const [valueArray, setValueArray] = useState([]);
   const isFocused = useRef({ isFocused: false });
 
   const generateNumber = () => {
@@ -13,13 +17,21 @@ const InputField = () => {
     for (let i = 0; i < randomQuantity; i++) {
       const random = Math.floor(Math.random() * 1000);
       if (i > 0) {
-        newValue += `, ${random.toString()}`;
+        newValue += `,${random.toString()}`;
       } else {
         newValue += random.toString();
       }
     }
     setValue(newValue);
+    setValueArray(newValue.split(","));
+    console.log(valueArray)
+    
   };
+
+  const startSorting = () => {
+    setValueArray(value.split(','))
+    console.log(valueArray)
+  }
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
@@ -52,17 +64,17 @@ const InputField = () => {
   };
 
   return (
-    <div className="menu-container flex">
+    <div className="menu-container flex w-full bg-blue-950 items-center">
       <button
-        className="min-w-10 border-solid border-2 text-gray-500 border-gray-500 h-fit w-fit p-3"
+        className="w-10 border-solid border-2 border-gray-500 h-[90%] rounded-md w-fit  text-white md:text-gray-500 px-5 py-2 text-center flex md:ml-6"
         onClick={generateNumber}
       >
         Generate Random Numbers
       </button>
-      <div className="input-container relative m-4">
-        <label className="sm:text-sm lg:text-lg absolute top-[-50%] left-[2%] px-1 text-gray-500 pointer-events-none z-50">
+      <div className="input-container relative m-4 flex items-center flex-wrap">
+        {/* <label className="sm:text-sm md:text-md lg:text-lg absolute top-[-50%] left-[2%] px-1 text-gray-500 pointer-events-none z-50">
           Input number:
-        </label>
+        </label> */}
 
         <input
           placeholder="23,45,13,..."
@@ -73,9 +85,14 @@ const InputField = () => {
           type="text"
           className={`${
             isFocused.current.isFocused && error && "focus:border-red-700 "
-          } border-2 border-solid rounded-md border-gray-500 min-w-[30rem] mx-3 p-2 focus:border-gray-700 focus:outline-none focus:ring-0`}
+          } border-2 border-solid rounded-md border-gray-500 mx-2 md:mx-5 p-2 focus:border-gray-700 focus:outline-none focus:ring-0 w-[250px] md:w-[350px]`}
           ref={isFocused}
         />
+        <div className="flex items-center md:justify-center ">
+          <button className="md:w-10 md:h-10 md:py-0 w-7 h-7 py-2 mx-2" onClick={startSorting}>
+            <img src={PlayIcon} alt="Play button" className="rounded-full" />
+          </button>
+        </div>
       </div>
     </div>
   );
