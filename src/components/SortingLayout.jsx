@@ -4,16 +4,20 @@ import BubbleSort from "./BubbleSort";
 
 const SortingLayout = () => {
   const [array, setArray] = useState([])
+  const [isSorting, setIsSorting] = useState(false)
 
-  function handleTestArrayChange(newArray){
+  function handleArrayChange(newArray){
     setArray(newArray)
-    console.log(array)
+  }
+
+  function handleSorting(startSorting) {
+    setIsSorting(startSorting)
   }
   
   return (
     <div className="sorting-container">
-      <InputField onUpdateArray={handleTestArrayChange}/>
-      <BubbleSort displayArray={array}/>
+      <InputField onUpdateArray={handleArrayChange} onStartSorting={handleSorting} isSorting={isSorting} setIsSorting={setIsSorting}/>
+      <BubbleSort displayArray={array} isSorting={isSorting}/>
     </div>
   );
 };
